@@ -7,11 +7,13 @@ function Auth() {
 	var Site = this;
 
 	this.Config = {
-		consumerKey: "PmMIThJN2lAM7w",
-		redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
-		scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
-		type: "implicit",
-		mobile: true
+		OAuth: {
+			type: "implicit",
+			consumerKey: "PmMIThJN2lAM7w",
+			scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
+			redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
+			token_type: "bearer"
+		},		
 	};
 
 	this.Elements = null;
@@ -50,7 +52,6 @@ function Auth() {
 	}
 
 	function SetupOAuth() {
-		//var match = ('' + window.location.href).match(/state=(.*?)&accessToken=(.*)&?/);
 		var match = location.hash.match(/^#?(.*)$/)[1];
 		if (match)
 		{
@@ -59,20 +60,20 @@ function Auth() {
 		   console.log(match[3]);
 		}
 		match = ('' + window.location.hash).match(/([A-Za-z]*)=(.*?)&/);
-        var accessToken = match ? match[1] : '';
+        var access_token = match ? match[1] : '';
         console.log(window.location.href);
 
 		randKey = Math.random().toString(36).substring(2);
 		reddit = new Snoocore({
 			userAgent: "ReddiSave/1.0:ibly31ut.github.io",
-			oauth: Site.Config
+			oauth: Site.Config.OAuth
 		});
 
-		if(accessToken){
-			Site.Config.accessToken = accessToken;
+		if(access_token){
+			Site.Config.OAuth.access_token = access_token;
 
-			if (accessToken) {
-	            reddit.auth(accessToken).then(function () {
+			if (access_token) {
+	            reddit.auth(access_token).then(function () {
 	                Site.AuthSuccess();
 	                return reddit('/api/v1/me').get();
 	            }).done(function (result) {
@@ -96,8 +97,10 @@ function Auth() {
     var arrData = [];
 
     function GetSavedPosts(params) {
-        params = params || {};
+        params = params || { Site.Config.OAuth };
         params.limit = 200;
+        console.log("Params:");
+        console.log(params);
         if (!Site.Config.me.name) {
         	return Site.GetSavedPosts(params);
         }
