@@ -51,8 +51,16 @@ function Auth() {
 
 	function SetupOAuth() {
 		//var match = ('' + window.location.href).match(/state=(.*?)&accessToken=(.*)&?/);
-		var match = ('' + window.location.hash).match(/access_token=(.*?)&/);
+		var match = location.hash.match(/^#?(.*)$/)[1];
+		if (match)
+		{
+		   console.log(match[1]);
+		   console.log(match[2]);
+		   console.log(match[3]);
+		}
+		match = ('' + window.location.hash).match(/([A-Za-z]*)=(.*?)&/);
         var accessToken = match ? match[1] : '';
+        console.log(window.location.href);
 
 		randKey = Math.random().toString(36).substring(2);
 		reddit = new Snoocore({
@@ -62,7 +70,6 @@ function Auth() {
 
 		if(accessToken){
 			Site.Config.accessToken = accessToken;
-			console.log("code: " + accessToken);
 
 			if (accessToken) {
 	            reddit.auth(accessToken).then(function () {
@@ -90,7 +97,7 @@ function Auth() {
 
     function GetSavedPosts(params) {
         params = params || {};
-        params.limit = 100;
+        params.limit = 200;
         if (!Site.Config.me.name) {
         	return Site.GetSavedPosts(params);
         }
