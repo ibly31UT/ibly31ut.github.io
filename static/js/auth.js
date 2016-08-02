@@ -20,6 +20,10 @@ function Auth() {
 	this.GotInfo = GotInfo;
 	this.BindEvents = BindEvents;
 	this.SetupOAuth = SetupOAuth;
+	this.GetSavedPosts = GetSavedPosts;
+	this.ShowSavedPosts = ShowSavedPosts;
+	this.ViewSavedPosts = ViewSavedPosts;
+	this.SortPosts = SortPosts;
 	this.Init = Init;
 
 	function LoadElements() {
@@ -68,10 +72,6 @@ function Auth() {
 	                Site.GotInfo(result);
 	            });
 	        }
-
-			// .done(function (result) {
-   //          	this.GotInfo(result);
-   //          });
 		} else{
 			console.log("No state or code found");
 		}
@@ -91,7 +91,9 @@ function Auth() {
     function GetSavedPosts(params) {
         params = params || {};
         params.limit = 100;
-        if (!Site.Config.me.name) return Site.GetSavedPosts(params);
+        if (!Site.Config.me.name) {
+        	return Site.GetSavedPosts(params);
+        }
         reddit('/user/' + Site.Config.me.name + '/saved').get(params).then(function (result) {
             arrData = arrData.concat(result.data.children);
             Site.Elements.Status.text('...getting data...');
@@ -100,7 +102,7 @@ function Auth() {
                 Site.GetSavedPosts(params);
                 console.log(arrData.length);
             } else {
-                Site.ShowSavedPosts(SortPosts(arrData));
+                Site.ShowSavedPosts(Site.SortPosts(arrData));
             }
         });
     }
@@ -167,8 +169,9 @@ function Auth() {
             var r = row.clone();
             r.find('.name').text(v.name);
             r.find('.val').text(v.val);
-            r.click(function (e) {
-                showPanel(v);
+            r.click(function () {
+            	console.log("clicky mcgee: " + v.name + "and val: " + v.val);
+                //showPanel(v);
             });
             rows.append(r);
         });
@@ -181,7 +184,7 @@ function Auth() {
 		Site.Elements.AuthButton.on("click", function (){
 			window.location = authUrl;
 		});
-		Site.Elements.FetchButton.on("click", Site.GetSavedPosts);
+		Site.Elements.FetchButton.on("click", Site.ViewSavedPosts);
 	}
 
 	function Init() {
