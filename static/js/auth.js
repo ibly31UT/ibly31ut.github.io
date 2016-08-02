@@ -9,7 +9,7 @@ function Auth() {
 	this.Config = {
 		consumerKey: "PmMIThJN2lAM7w",
 		redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
-		scopes: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
+		scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
 		type: "implicit",
 		mobile: true
 	};
