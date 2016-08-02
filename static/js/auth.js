@@ -1,6 +1,6 @@
 "use strict";
-/* jsignore: assign */
-/* jsignore: Site */
+/* global: assign */
+/* global: Site */
 
 function Auth() {
 	var reddit;
@@ -9,14 +9,7 @@ function Auth() {
 	var Auth = this;
 
 	this.Config = {
-		OAuth: assign({ 
-			type: "implicit",
-			consumerKey: "PmMIThJN2lAM7w",
-			scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
-			redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
-			token_type: "bearer",
-			limit: 100
-		}, Site.HashVars)	
+		OAuth: null	
 	};
 
 	this.Elements = null;
@@ -25,6 +18,7 @@ function Auth() {
 	this.GotInfo = GotInfo;
 	this.BindEvents = BindEvents;
 	this.SetupOAuth = SetupOAuth;
+	this.LoadVars = LoadVars;
 	this.GetSavedPosts = GetSavedPosts;
 	this.ShowSavedPosts = ShowSavedPosts;
 	this.ViewSavedPosts = ViewSavedPosts;
@@ -183,6 +177,18 @@ function Auth() {
         Auth.Elements.Status.text("Done.....Enjoy!");
     }
 
+    function LoadVars() {
+    	Auth.Config = { 
+			type: "implicit",
+			consumerKey: "PmMIThJN2lAM7w",
+			scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
+			redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
+			token_type: "bearer",
+			limit: 100
+		};
+    	assign(Auth.Config, Site.HashVars);
+    }
+
 	function BindEvents() {
 		Auth.Elements = LoadElements();
 		Auth.Elements.AuthButton.on("click", function (){
@@ -193,6 +199,7 @@ function Auth() {
 
 	function Init() {
 		var app = this;
+		app.LoadVars();
 		app.SetupOAuth();
 		app.BindEvents();
 	}
