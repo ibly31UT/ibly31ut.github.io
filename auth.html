@@ -13,7 +13,8 @@
 	</div>
 </div>
 <script type="text/javascript">
-var script = $("<script>{{:"<"}}/script>");
-script.attr("src", "{{:pageObj}}?nocache=345");
-$(document.body).append(script);
+$.getScript("{{:pageObj}}?nocache=345", function( script, textStatus){
+	console.log(script);
+	console.log(textStatus);
+});
 {{:"<"}}/script>
