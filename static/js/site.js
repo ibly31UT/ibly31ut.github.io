@@ -11,8 +11,7 @@ function Site() {
 	};
 
 	this.Config = {
-		consumerKey: "1U3eY8uqCUIaBA",
-		consumerSecret: "WLM29BUoWE7RS8WSj912hlywwcI",
+		consumerKey: "PmMIThJN2lAM7w",
 		redirectUri: "https://ibly31ut.github.io/index.html",
 		authorizationCode: "invalid",
 	};
@@ -38,54 +37,59 @@ function Site() {
 	}
 
 	function GotInfo(result) {
-		window.console.log(result);
+		console.log(result);
 
-		this.Elements.AuthConfirmation.text(result.scope).fadeIn().done(function() {
+		this.Elements.AuthConfirmation.text(result.name).fadeIn().done(function() {
 			this.Elements.AuthButton.fadeOut();
 		});
 	}
 
 	function SetupOAuth() {
-		var match = ('' + window.location.href).match(/state=(.*?)&code=(.*)&?/);
-		window.console.log(match);
+		//var match = ('' + window.location.href).match(/state=(.*?)&accessToken=(.*)&?/);
+		var match = ('' + window.location.href).match(/accessToken=(.*)&?/);
+		console.log(match);
+		console.log(window.location.href);
 		var state = match ? match[1] : '';
-		var code = match ? match[2] : '';
+		var accessToken = match ? match[2] : '';
 
 		randKey = Math.random().toString(36).substring(2);
 		reddit = new Snoocore({
 			userAgent: "ReddiSave/1.0:ibly31ut.github.io",
 			oauth: { 
-				type: "explicit", // required when using implicit OAuth
-				mobile: false, // defaults to false.
+				type: "implicit", // required when using implicit OAuth
+				mobile: true, // defaults to false.
 				consumerKey: this.Config.consumerKey, 
-				consumerSecret: this.Config.consumerSecret,
 				state: randKey,
 				redirectUri: this.Config.redirectUri,
 				scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ]
 			}
 		});
 
-		window.console.log(window.location.href);
+		if(accessToken){
+			this.Config.accessToken = accessToken;
+			console.log("state: " + state);
+			console.log("code: " + accessToken);
 
-		if(code){
-			this.Config.authorizationCode = code;
-			window.console.log("state: " + state);
-			window.console.log("code: " + code);
-
-			var result = reddit.auth(code).always(function(result){
-				window.console.log("Done result: ");
-				window.console.log(result);
-			});
-			window.console.log("Immediately after:");
-			window.console.log(result);
+			if (accessToken) {
+	            reddit.auth(accessToken).then(function () {
+	                this.AuthSuccess();
+	                return reddit('/api/v1/me').get();
+	            }).done(function (result) {
+	                var name = result.name;
+	                this.GotInfo(result);
+	            });
+	        }
 
 			// .done(function (result) {
    //          	this.GotInfo(result);
    //          });
+		} else{
+			console.log("No state or code found");
 		}
 
+		//{"access_token": "ITpEom6AZ8CsJMQklWV-57fCJFo", "token_type": "bearer", "expires_in": 3600, "scope": "edit flair history identity read subscribe vote"}
+
 		authUrl = reddit.getExplicitAuthUrl();
-		open()
 	}
 
 	function BindEvents() {
