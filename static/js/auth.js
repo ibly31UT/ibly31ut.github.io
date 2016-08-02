@@ -59,9 +59,10 @@ function Auth() {
 		   console.log(match[2]);
 		   console.log(match[3]);
 		}
-		match = ('' + window.location.hash).match(/([A-Za-z]*)=(.*?)&/);
+		match = ('' + window.location.hash).match(/#access_token=(.*?)&/);
         var access_token = match ? match[1] : '';
-        console.log(window.location.href);
+        console.log(window.location.hash);
+        console.log(window.location.queryString);
 
 		randKey = Math.random().toString(36).substring(2);
 		reddit = new Snoocore({

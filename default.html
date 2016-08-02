@@ -46,12 +46,7 @@
 	 		window.ReadyToLoad = false;
 	 		$(document).ready(function(){
 	 			var settings = {
-	 				async: false,
-
-	 			}
-	 			var settings = {
 				  "async": true,
-				  "crossDomain": true,
 				  "url": "https://ibly31ut.github.io/auth.html",
 				  "method": "GET",
 				  "headers": {
@@ -68,6 +63,15 @@
 
 		<script type="text/javascript">
 			$(document).ready(function(){
+				location.queryString = {};
+				location.hash.substr(1).split("&").forEach(function(pair) {
+					if (pair === ""){ 
+						return;
+					}
+					var parts = pair.split("=");
+					location.queryString[parts[0]] = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, " "));
+				});
+
 				var app = new Site();
 				app.Init();
 				
