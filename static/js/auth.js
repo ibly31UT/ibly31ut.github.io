@@ -8,17 +8,15 @@ function Auth() {
 	var randKey = null;
 	var Auth = this;
 
-	this.Config = function() {
-		return {
-			OAuth: assign({ 
-				type: "implicit",
-				consumerKey: "PmMIThJN2lAM7w",
-				scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
-				redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
-				token_type: "bearer",
-				limit: 100
-			}, Site.HashVars)
-		};
+	this.Config = {
+		OAuth: assign({ 
+			type: "implicit",
+			consumerKey: "PmMIThJN2lAM7w",
+			scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
+			redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
+			token_type: "bearer",
+			limit: 100
+		}, Site.HashVars)	
 	};
 
 	this.Elements = null;
@@ -62,7 +60,7 @@ function Auth() {
         console.log(window.location.hash);
         console.log(window.location.queryString);
 
-		randKey = Math.random().toString(36).substring(2);
+		randKey = Math.random().toString(36).substring(1);
 		reddit = new Snoocore({
 			userAgent: "ReddiSave/1.0:ibly31ut.github.io",
 			oauth: Auth.Config.OAuth
@@ -70,7 +68,7 @@ function Auth() {
 
 		if(Auth.Config.OAuth.access_token !== undefined){
 
-            reddit.auth(access_token).then(function () {
+            reddit.auth(Auth.Config.OAuth.access_token).then(function () {
                 Auth.AuthSuccess();
                 return reddit('/api/v1/me').get();
             }).done(function (result) {
