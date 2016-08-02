@@ -89,7 +89,7 @@ function Site() {
 
 		//{"access_token": "ITpEom6AZ8CsJMQklWV-57fCJFo", "token_type": "bearer", "expires_in": 3600, "scope": "edit flair history identity read subscribe vote"}
 
-		authUrl = reddit.getExplicitAuthUrl();
+		authUrl = reddit.getImplicitAuthUrl();
 	}
 
 	function BindEvents() {
