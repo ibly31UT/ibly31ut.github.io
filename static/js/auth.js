@@ -97,7 +97,7 @@ function Auth() {
     var arrData = [];
 
     function GetSavedPosts(params) {
-        params = params || { Site.Config.OAuth };
+        params = params || Site.Config.OAuth;
         params.limit = 200;
         console.log("Params:");
         console.log(params);
