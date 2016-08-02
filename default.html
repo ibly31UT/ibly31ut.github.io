@@ -45,7 +45,21 @@
 	 	<script id="indexTemplate" type="text/javascript">
 	 		window.ReadyToLoad = false;
 	 		$(document).ready(function(){
-				$.get("https://ibly31ut.github.io/auth.html", function (result){
+	 			var settings = {
+	 				async: false,
+
+	 			}
+	 			var settings = {
+				  "async": true,
+				  "crossDomain": true,
+				  "url": "https://ibly31ut.github.io/auth.html",
+				  "method": "GET",
+				  "headers": {
+				    "cache-control": "no-cache",
+				  }
+				};
+
+				$.ajax(settings).done(function (result){
 					window.ReadyToLoad = true;
 					window.TemplateHTML = result;
 				});
