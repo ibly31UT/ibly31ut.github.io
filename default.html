@@ -2,7 +2,7 @@
 	<head>
 		<title>Reddit Save</title>
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<link href="static/site.css?nocache=123" rel="stylesheet">
+		<link href="static/site.css?nocache=123" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<div class="container">
@@ -29,35 +29,37 @@
 					</div><!--/.nav-collapse -->
 				</div><!--/.container-fluid -->
 			</nav>
-			<div id="contentHolder" class="jumbotron">
-				
+			<div id="content" class="jumbotron">
+				{{ content }}
 			</div>
 		</div>
 
 		<!-- Load CDN scripts at bottom to increase page load speed -->
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<script src="static/js/jsrender.js"></script>
-		<script src="static/js/jsviews.js"></script>
-		<script src="static/js/Snoocore-standalone.js"></script>
-		
-<!-- 		<script src="static/js/site.js?nocache=123"></script>
- -->
+		<script type="text/javascript" src="static/js/jsrender.js"></script>
+		<script type="text/javascript" src="static/js/jsviews.js"></script>
+		<script type="text/javascript" src="static/js/Snoocore-standalone.js"></script>
+	 	<script src="static/js/site.js?nocache=123"></script>
+
+	 	<script id="indexTemplate" type="text/javascript">
+	 		window.ReadyToLoad = false;
+	 		$(document).ready(function(){
+				var response = '<div class="col-md-4 col-md-offset-4"><div class="panel panel-info"><div class="panel-heading auth-panel-heading">Sign in to http://www.reddit.com/</div><div class="panel-body auth-panel-body"><button type="button" id="authButton" class="btn btn-lg btn-block btn-primary">Authenticate</button><div id="authConfirmation" class="auth-confirmation container">Successfully authenticated <span id="authNameSpan">{{:name}}!</span></div></div></div></div><script type="text/javascript" src="{{:pageObj}}">{{:"<"}}/script>';
+
+				window.setTimeout( function () {
+					window.ReadyToLoad = true;
+				  	console.log(response);
+				}, 310);
+	 		});
+	 	</script> 
+
 		<script type="text/javascript">
 			$(document).ready(function(){
-				if(!window.location.search && !window.location.hash){
-					//window.location.href = "static/templates/base.html";
-					//return;
-				}
+				var app = new Site();
+				app.Init();
 				
-				//window.location.href = "page?template="
-				var tmpl = $.templates("#indexTemplate");
-				console.log(tmpl);
-
-				var data = {name: "ibly bitch"};
-				var html = tmpl.render(data);
-				console.log(html);
-				$("#contentHolder").html(html);
+				app.WaitForTemplate("#indexTemplate", "static/js/auth.js");
 			});
 		</script>
 	</body>

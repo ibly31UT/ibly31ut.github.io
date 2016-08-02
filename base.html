@@ -40,17 +40,13 @@
 		<script src="static/js/jsrender.js"></script>
 		<script src="static/js/jsviews.js"></script>
 		<script src="static/js/Snoocore-standalone.js"></script>
-		
+		<script id="indexTemplate" type="text/x-jsrender" src="static/templates/base.html">
+			Name: {{:name}}!
+		</script>
 <!-- 		<script src="static/js/site.js?nocache=123"></script>
  -->
 		<script type="text/javascript">
 			$(document).ready(function(){
-				if(!window.location.search && !window.location.hash){
-					//window.location.href = "static/templates/base.html";
-					//return;
-				}
-				
-				//window.location.href = "page?template="
 				var tmpl = $.templates("#indexTemplate");
 				console.log(tmpl);
 
