@@ -1,20 +1,24 @@
 "use strict";
+/* jsignore: assign */
+/* jsignore: Site */
 
 function Auth() {
 	var reddit;
 	var authUrl = null;
 	var randKey = null;
-	var Site = this;
+	var Auth = this;
 
-	this.Config = {
-		OAuth: {
-			type: "implicit",
-			consumerKey: "PmMIThJN2lAM7w",
-			scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
-			redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
-			token_type: "bearer",
-			limit: 100
-		},		
+	this.Config = function() {
+		return {
+			OAuth: assign({ 
+				type: "implicit",
+				consumerKey: "PmMIThJN2lAM7w",
+				scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
+				redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
+				token_type: "bearer",
+				limit: 100
+			}, Site.HashVars)
+		};
 	};
 
 	this.Elements = null;
@@ -41,49 +45,37 @@ function Auth() {
 	}
 
 	function AuthSuccess() {
-		Site.Elements.AuthButton.addClass('btn-success').text("Logged in...").unbind('click');
+		Auth.Elements.AuthButton.addClass('btn-success').text("Logged in...").unbind('click');
 	}
 
 	function GotInfo(result) {
 		console.log(result);
-		Site.Config.me = result;
+		Auth.Config.me = result;
 
-		Site.Elements.AuthNameSpan.text(result.name).fadeIn(500, function() {
-			Site.Elements.AuthButton.fadeOut();
-			Site.Elements.FetchButton.fadeIn();
+		Auth.Elements.AuthNameSpan.text(result.name).fadeIn(500, function() {
+			Auth.Elements.AuthButton.fadeOut();
+			Auth.Elements.FetchButton.fadeIn();
 		});
 	}
 
 	function SetupOAuth() {
-		var match = location.hash.match(/^#?(.*)$/)[1];
-		if (match)
-		{
-		   console.log(match[1]);
-		   console.log(match[2]);
-		   console.log(match[3]);
-		}
-		match = ('' + window.location.hash).match(/#access_token=(.*?)&/);
-        var access_token = match ? match[1] : '';
         console.log(window.location.hash);
         console.log(window.location.queryString);
 
 		randKey = Math.random().toString(36).substring(2);
 		reddit = new Snoocore({
 			userAgent: "ReddiSave/1.0:ibly31ut.github.io",
-			oauth: Site.Config.OAuth
+			oauth: Auth.Config.OAuth
 		});
 
-		if(access_token){
-			Site.Config.OAuth.access_token = access_token;
+		if(Auth.Config.OAuth.access_token !== undefined){
 
-			if (access_token) {
-	            reddit.auth(access_token).then(function () {
-	                Site.AuthSuccess();
-	                return reddit('/api/v1/me').get();
-	            }).done(function (result) {
-	                Site.GotInfo(result);
-	            });
-	        }
+            reddit.auth(access_token).then(function () {
+                Auth.AuthSuccess();
+                return reddit('/api/v1/me').get();
+            }).done(function (result) {
+                Auth.GotInfo(result);
+            });
 		} else{
 			console.log("No state or code found");
 		}
@@ -95,27 +87,28 @@ function Auth() {
 
 	function ViewSavedPosts() {
         $(this).unbind('click');
-        Site.GetSavedPosts();
+        Auth.GetSavedPosts();
     }
 
     var arrData = [];
 
     function GetSavedPosts(params) {
-        params = params || Site.Config.OAuth;
+        params = params || Auth.Config.OAuth;
         console.log("Params:");
         console.log(params);
-        if (!Site.Config.me.name) {
-        	return Site.GetSavedPosts(params);
+        if (!Auth.Config.me.name) {
+        	return Auth.GetSavedPosts(params);
         }
-        reddit('/user/' + Site.Config.me.name + '/saved').get(params).then(function (result) {
+        reddit('/user/' + Auth.Config.me.name + '/saved').get(params).then(function (result) {
             arrData = arrData.concat(result.data.children);
-            Site.Elements.Status.text('...getting data...');
+            Auth.Elements.Status.text('... getting saved posts ...');
             if (result.data.after) {
                 params.after = result.data.after;
-                Site.GetSavedPosts(params);
+
+                Auth.GetSavedPosts(params);
                 console.log(arrData.length);
             } else {
-                Site.ShowSavedPosts(Site.SortPosts(arrData));
+                Auth.ShowSavedPosts(Auth.SortPosts(arrData));
             }
         });
     }
@@ -188,16 +181,16 @@ function Auth() {
             });
             rows.append(r);
         });
-        Site.Elements.Result.append(rows);
-        Site.Elements.Status.text("Done.....Enjoy!");
+        Auth.Elements.Result.append(rows);
+        Auth.Elements.Status.text("Done.....Enjoy!");
     }
 
 	function BindEvents() {
-		Site.Elements = LoadElements();
-		Site.Elements.AuthButton.on("click", function (){
+		Auth.Elements = LoadElements();
+		Auth.Elements.AuthButton.on("click", function (){
 			window.location = authUrl;
 		});
-		Site.Elements.FetchButton.on("click", Site.ViewSavedPosts);
+		Auth.Elements.FetchButton.on("click", Auth.ViewSavedPosts);
 	}
 
 	function Init() {
@@ -207,5 +200,5 @@ function Auth() {
 	}
 }
 
-var auth = new Auth();
-auth.Init();
+Site.Auth = new Auth();
+Site.Auth.Init();

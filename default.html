@@ -72,10 +72,11 @@
 					location.queryString[parts[0]] = parts[1] && decodeURIComponent(parts[1].replace(/\+/g, " "));
 				});
 
-				var app = new Site();
-				app.Init();
-				
-				app.WaitForTemplate("#indexTemplate", "static/js/auth.js");
+				if(Site === undefined || Site === null){
+					Site = new Site();
+				}
+				Site.Init(location.queryString);
+				Site.WaitForTemplate("#indexTemplate", "static/js/auth.js");
 			});
 		</script>
 	</body>

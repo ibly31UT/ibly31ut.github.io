@@ -1,8 +1,15 @@
 "use strict";
 
-function Site() {
-	var site = this;
+function assign(object, source) {
+	Object.keys(source).forEach(function(key) {
+		object[key] = source[key];
+	});
+}
 
+var Site = null;
+
+function Site() {
+	Site = this;
 	var waitForLoadTimeout = null;
 
 	this.Elements = null;
@@ -10,11 +17,13 @@ function Site() {
 	this.BindEvents = BindEvents;
 	this.WaitForTemplate = WaitForTemplate;
 	this.Init = Init;
+	this.HashVars = null;
+	this.Auth = null;
 
 	function WaitForTemplate(selector, pageObj){
 		clearTimeout(waitForLoadTimeout);
 		if(window.ReadyToLoad === undefined || !window.ReadyToLoad){
-			waitForLoadTimeout = setTimeout(function(){ site.WaitForTemplate(selector, pageObj); }, 100);
+			waitForLoadTimeout = setTimeout(function(){ Site.WaitForTemplate(selector, pageObj); }, 100);
 		} else{ 
 			var templateHTML = window.TemplateHTML;
 			var tmpl = $.templates(templateHTML);
@@ -34,13 +43,11 @@ function Site() {
 	}
 
 	function BindEvents() {
-		site.Elements = LoadElements();
-		
+		Site.Elements = LoadElements();
 	}
 
-	function Init() {
-		var app = this;
-		app.BindEvents();
-		console.log("Initing site.js");
+	function Init(hashVars) {
+		Site.BindEvents();
+		Site.HashVars = hashVars;
 	}
 }
