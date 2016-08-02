@@ -12,5 +12,8 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="{{:pageObj}}?nocache=234">
+<script type="text/javascript">
+var script = $("<script>{{:"<"}}/script>");
+script.attr("src", "{{:pageObj}}?nocache=345");
+$(document.body).append(script);
 {{:"<"}}/script>
