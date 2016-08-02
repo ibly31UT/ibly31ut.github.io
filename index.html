@@ -2,8 +2,7 @@
 	<head>
 		<title>Reddit Save</title>
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<link href="site.css" rel="stylesheet">
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<link href="static/site.css?nocache=123" rel="stylesheet">
 	</head>
 	<body>
 		<div class="container">
@@ -16,34 +15,48 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Project name</a>
+						<a class="navbar-brand" href="#">Reddit Saved Manager</a>
 					</div>
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
 							<li class="active"><a href="#">Home</a></li>
 							<li><a href="#">About</a></li>
 							<li><a href="#">Contact</a></li>
-							<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li class="dropdown-header">Nav header</li>
-								<li><a href="#">Separated link</a></li>
-								<li><a href="#">One more separated link</a></li>
-							</ul>
-							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-							<li><a href="../navbar-static-top/">Static top</a></li>
-							<li><a href="../navbar-fixed-top/">Fixed top</a></li>
+							<li class="active"><a href="#">Signed in as <strong>ibly31</strong></a></li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div><!--/.container-fluid -->
 			</nav>
+			<div class="jumbotron">
+				<div class="col-md-4 col-md-offset-4">
+					<div class="panel panel-info">
+						<div class="panel-heading auth-panel-heading">
+							Sign in to http://www.reddit.com/
+						</div>
+						<div class="panel-body auth-panel-body">
+							<button type="button" id="authButton" class="btn btn-lg btn-block btn-primary">Authenticate</button>
+							<div id="auth-confirmation" class="auth-confirmation container">
+								Successfully authenticated ibly31!
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+		<!-- Load CDN scripts at bottom to increase page load speed -->
+		<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="static/js/Snoocore-standalone.js"></script>
+
+		<script src="static/js/site.js?nocache=123"></script>
+
+		<script>
+			$(document).ready(function(){
+				var app = new Site();
+				app.Init();
+			});
+		</script>
 	</body>
 </html>

@@ -1,0 +1,23 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.jumbotron {
+	overflow-y: auto;
+}
+
+.auth-panel-heading {
+	font-size: 18px !important;
+	text-align: center !important;
+}
+
+.auth-panel-body {
+	text-align: center;
+}
+
+.auth-confirmation {
+	text-align: center;
+	margin-top: 10px;
+
+}
