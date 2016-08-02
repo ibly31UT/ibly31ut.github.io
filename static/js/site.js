@@ -12,12 +12,12 @@ function Site() {
 	this.Init = Init;
 
 	function WaitForTemplate(selector, pageObj){
-		var craziness = "123";
 		clearTimeout(waitForLoadTimeout);
 		if(window.ReadyToLoad === undefined || !window.ReadyToLoad){
 			waitForLoadTimeout = setTimeout(function(){ site.WaitForTemplate(selector, pageObj); }, 100);
 		} else{ 
-			var tmpl = $.templates(selector);
+			var templateHTML = window.TemplateHTML;
+			var tmpl = $.templates(templateHTML);
 			console.log(tmpl);
 
 			var data = {name: "ibly beetchesss", pageObj: pageObj};
@@ -25,8 +25,6 @@ function Site() {
 			console.log(html);
 			$("#content").html(html);
 		}
-		craziness += "455";
-		console.log(craziness);
 	}
 
 	function LoadElements() {
