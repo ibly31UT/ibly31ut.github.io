@@ -33,7 +33,9 @@ function Auth() {
 			AuthButton: $("#authButton"),
 			AuthConfirmation: $("#authConfirmation"),
 			AuthNameSpan: $("#authNameSpan"),
-			FetchButton: $("#fetchButton")
+			FetchButton: $("#fetchButton"),
+			Status: $("#status"),
+			Result: $("#result")
 		};
 	}
 
