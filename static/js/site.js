@@ -51,6 +51,10 @@ function Site() {
 			}
 		});
 
+		window.console.log("Access token: ");
+		window.console.log(accessToken);
+		window.console.log(window.location.hash);
+
 		if(accessToken){
 			reddit.auth(accessToken).then(function () {
                 this.AuthSuccess();
