@@ -12,7 +12,8 @@ function Auth() {
 			consumerKey: "PmMIThJN2lAM7w",
 			scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
 			redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
-			token_type: "bearer"
+			token_type: "bearer",
+			limit: 100
 		},		
 	};
 
@@ -101,7 +102,6 @@ function Auth() {
 
     function GetSavedPosts(params) {
         params = params || Site.Config.OAuth;
-        params.limit = 200;
         console.log("Params:");
         console.log(params);
         if (!Site.Config.me.name) {
