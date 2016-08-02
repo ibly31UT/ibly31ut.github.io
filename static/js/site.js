@@ -1,3 +1,4 @@
+/* global Site */
 "use strict";
 
 function assign(object, source) {
@@ -6,9 +7,8 @@ function assign(object, source) {
 	});
 }
 
-var Site = null;
 
-function Site() {
+function SitePageObject() {
 	Site = this;
 	var waitForLoadTimeout = null;
 
@@ -29,7 +29,7 @@ function Site() {
 			var tmpl = $.templates(templateHTML);
 			console.log(tmpl);
 
-			var data = {name: "ibly beetchesss", pageObj: pageObj};
+			var data = {pageObj: pageObj};
 			var html = tmpl.render(data);
 			console.log(html);
 			$("#content").html(html);

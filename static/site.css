@@ -21,3 +21,13 @@ body {
 	margin-top: 10px;
 
 }
+
+.status-indicator {
+	font-size: 18px;
+	text-align: center;
+}
+
+.results-table {
+	font-size: 18px;
+	text-align: center;
+}

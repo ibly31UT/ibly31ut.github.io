@@ -4,20 +4,21 @@
 			Sign in to http://www.reddit.com/
 		</div>
 		<div class="panel-body auth-panel-body">
-			<button type="button" id="authButton" class="btn btn-lg btn-block btn-primary">Authenticate</button>
-			<div id="authConfirmation" class="auth-confirmation container">
-				Successfully authenticated <span id="authNameSpan">{{:name}}!</span>
-				<button type="button" id="fetchButton" class="btn btn-lg btn-block btn-primary">Fetch Posts</button>
+			<div class="form-group">
+				<button type="button" id="authButton" class="btn btn-lg btn-block btn-primary">Authenticate</button>
+				<div id="authConfirmation" class="auth-confirmation container">
+					<button type="button" id="fetchButton" class="btn hide btn-lg btn-block btn-primary">Fetch Posts</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <div class="col-xs-12 row jumbotron">
-	<div id="status" class="col-xs-12 col-md-4 col-md-offset-4">
+	<div id="status" class="col-xs-12 col-md-4 col-md-offset-4 status-indicator">
 		Status symbolzz.
 	</div>
-	<div id="result" class="col-xs-12 col-md-4 col-md-offset-4">
-		Resultant
+	<div id="result" class="col-xs-12 col-md-4 col-md-offset-4 results-table">
+		Results
 	</div>
 </div>
 <script type="text/javascript">
