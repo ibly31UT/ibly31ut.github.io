@@ -8,7 +8,7 @@ function Auth() {
 
 	this.Config = {
 		consumerKey: "PmMIThJN2lAM7w",
-		redirectUri: "https://ibly31ut.github.io/index.html",
+		redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
 		scopes: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
 		type: "implicit",
 		mobile: true
@@ -33,7 +33,6 @@ function Auth() {
 
 	function AuthSuccess() {
 		Site.Elements.AuthButton.addClass('btn-success').text("Logged in...").unbind('click');
-
 	}
 
 	function GotInfo(result) {
