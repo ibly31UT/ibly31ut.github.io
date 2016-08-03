@@ -1,111 +1,97 @@
-"use strict";
-/* global: assign */
-/* global: Site */
+/* globals Site */
+/* exported Auth */
 
-function Auth() {
-	var reddit;
-	var authUrl = null;
-	var randKey = null;
-	var Auth = this;
+var Auth = (function() {
+    'use strict';
+    var reddit;
+    var authUrl = null;
+    var randKey = null;
 
-	this.Config = {
-		OAuth: null	
-	};
+    var Config = {
+        OAuth: null
+    };
 
-	this.Elements = null;
-	this.LoadElements = LoadElements;
-	this.AuthSuccess = AuthSuccess;
-	this.GotInfo = GotInfo;
-	this.BindEvents = BindEvents;
-	this.SetupOAuth = SetupOAuth;
-	this.LoadVars = LoadVars;
-	this.GetSavedPosts = GetSavedPosts;
-	this.ShowSavedPosts = ShowSavedPosts;
-	this.ViewSavedPosts = ViewSavedPosts;
-	this.SortPosts = SortPosts;
-	this.Init = Init;
+    var Elements = null;
 
-	function LoadElements() {
-		return {
-			AuthButton: $("#authButton"),
-			AuthConfirmation: $("#authConfirmation"),
-			AuthNameSpan: $("#authNameSpan"),
-			FetchButton: $("#fetchButton"),
-			Status: $("#status"),
-			Result: $("#result")
-		};
-	}
+    var LoadElements = function() {
+        return {
+            AuthButton: $("#authButton"),
+            AuthConfirmation: $("#authConfirmation"),
+            AuthNameSpan: $("#authNameSpan"),
+            FetchButton: $("#fetchButton"),
+            Status: $("#status"),
+            Result: $("#result")
+        };
+    };
 
-	function AuthSuccess() {
-		Auth.Elements.AuthButton.addClass('btn-success').text("Logged in...").unbind('click');
-	}
+    var AuthSuccess = function() {
+        Elements.AuthButton.addClass('btn-success').text("Logged in...").unbind('click');
+    };
 
-	function GotInfo(result) {
-		console.log(result);
-		Auth.Config.me = result;
+    var GotInfo = function(result) {
+        console.log(result);
+        Config.me = result;
 
-		Auth.Elements.AuthNameSpan.text(result.name).fadeIn(500, function() {
-			Auth.Elements.AuthButton.fadeOut();
-			Auth.Elements.FetchButton.fadeIn();
-		});
-	}
+        Elements.AuthNameSpan.text(result.name).fadeIn(500, function() {
+            Elements.AuthButton.fadeOut();
+            Elements.FetchButton.fadeIn();
+        });
+    };
 
-	function SetupOAuth() {
+    var SetupOAuth = function() {
         console.log(window.location.hash);
         console.log(window.location.queryString);
 
-		randKey = Math.random().toString(36).substring(1);
-		reddit = new Snoocore({
-			userAgent: "ReddiSave/1.0:ibly31ut.github.io",
-			oauth: Auth.Config.OAuth
-		});
+        randKey = Math.random().toString(36).substring(1);
+        reddit = new Snoocore({
+            userAgent: "ReddiSave/1.0:ibly31ut.github.io",
+            oauth: Config.OAuth
+        });
 
-		if(Auth.Config.OAuth.access_token !== undefined){
+        if (Config.OAuth.access_token !== undefined) {
 
-            reddit.auth(Auth.Config.OAuth.access_token).then(function () {
-                Auth.AuthSuccess();
+            reddit.auth(Config.OAuth.access_token).then(function() {
+                AuthSuccess();
                 return reddit('/api/v1/me').get();
-            }).done(function (result) {
-                Auth.GotInfo(result);
+            }).done(function(result) {
+                GotInfo(result);
             });
-		} else{
-			console.log("No state or code found");
-		}
+        } else {
+            console.log("No state or code found");
+        }
 
-		//{"access_token": "ITpEom6AZ8CsJMQklWV-57fCJFo", "token_type": "bearer", "expires_in": 3600, "scope": "edit flair history identity read subscribe vote"}
+        authUrl = reddit.getImplicitAuthUrl();
+    };
 
-		authUrl = reddit.getImplicitAuthUrl();
-	}
-
-	function ViewSavedPosts() {
+    var ViewSavedPosts = function() {
         $(this).unbind('click');
-        Auth.GetSavedPosts();
-    }
+        GetSavedPosts();
+    };
 
     var arrData = [];
 
-    function GetSavedPosts(params) {
-        params = params || Auth.Config.OAuth;
+    var GetSavedPosts = function(params) {
+        params = params || Config.OAuth;
         console.log("Params:");
         console.log(params);
-        if (!Auth.Config.me.name) {
-        	return Auth.GetSavedPosts(params);
+        if (!Config.me.name) {
+            return GetSavedPosts(params);
         }
-        reddit('/user/' + Auth.Config.me.name + '/saved').get(params).then(function (result) {
+        reddit('/user/' + Config.me.name + '/saved').get(params).then(function(result) {
             arrData = arrData.concat(result.data.children);
-            Auth.Elements.Status.text('... getting saved posts ...');
+            Elements.Status.text('... getting saved posts ...');
             if (result.data.after) {
                 params.after = result.data.after;
 
-                Auth.GetSavedPosts(params);
+                GetSavedPosts(params);
                 console.log(arrData.length);
             } else {
-                Auth.ShowSavedPosts(Auth.SortPosts(arrData));
+                ShowSavedPosts(SortPosts(arrData));
             }
         });
-    }
+    };
 
-    function SortPosts(data) {
+    var SortPosts = function(data) {
 
         return (sortArr(makeArr()));
 
@@ -157,53 +143,76 @@ function Auth() {
             return arr;
         }
 
-    }
+    };
 
-    function ShowSavedPosts(data) {
+    var ShowSavedPosts = function(data) {
         console.log(data);
         var rows = $('<div class="rows">');
         var row = $('<div class="row"><div class="name"></div><div class="val"></div></div>');
-        data.forEach(function (v) {
+        data.forEach(function(v) {
             var r = row.clone();
             r.find('.name').text(v.name);
             r.find('.val').text(v.val);
-            r.click(function () {
-            	console.log("clicky mcgee: " + v.name + "and val: " + v.val);
+            r.click(function() {
+                console.log("clicky mcgee: " + v.name + "and val: " + v.val);
                 //showPanel(v);
             });
             rows.append(r);
         });
-        Auth.Elements.Result.append(rows);
-        Auth.Elements.Status.text("Done.....Enjoy!");
-    }
+        Elements.Result.append(rows);
+        Elements.Status.text("Done.....Enjoy!");
+    };
 
-    function LoadVars() {
-    	Auth.Config = { 
-			type: "implicit",
-			consumerKey: "PmMIThJN2lAM7w",
-			scope: [ "flair", "identity", "history", "edit", "read", "subscribe", "vote" ],
-			redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
-			token_type: "bearer",
-			limit: 100
-		};
-    	assign(Auth.Config, Site.HashVars);
-    }
+    var LoadVars = function() {
+        Config.OAuth = {
+            type: "implicit",
+            consumerKey: "PmMIThJN2lAM7w",
+            scope: ["flair", "identity", "history", "edit", "read", "subscribe", "vote"],
+            redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
+            token_type: "bearer",
+            limit: 100
+        };
+        console.log("Assigning config");
+        Config.OAuth = Object.assign(Config.OAuth, Site.HashVars);
+        console.log(Config);
+    };
 
-	function BindEvents() {
-		Auth.Elements = LoadElements();
-		Auth.Elements.AuthButton.on("click", function (){
-			window.location = authUrl;
-		});
-		Auth.Elements.FetchButton.on("click", Auth.ViewSavedPosts);
-	}
+    var BindEvents = function() {
+        Elements = LoadElements();
+        Elements.AuthButton.on("click", function() {
+            window.location = authUrl;
+        });
+        Elements.FetchButton.on("click", ViewSavedPosts);
+    };
 
-	function Init() {
-		var app = this;
-		app.LoadVars();
-		app.SetupOAuth();
-		app.BindEvents();
-	}
-}
+    var Init = function() {
+        LoadVars();
+        SetupOAuth();
+        BindEvents();
+    };
 
-Site.Auth = new Auth();
-Site.Auth.Init();
+    return {
+        Init: Init,
+        Config: Config,
+    };
+
+}());
+
+//tiny pub sub
+(function($) {
+    'use strict';
+    var o = $({});
+
+    $.subscribe = function() {
+        o.on.apply(o, arguments);
+    };
+
+    $.unsubscribe = function() {
+        o.off.apply(o, arguments);
+    };
+
+    $.publish = function() {
+        o.trigger.apply(o, arguments);
+    };
+
+}(jQuery));
