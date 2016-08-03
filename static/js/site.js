@@ -112,7 +112,7 @@ var Site = (function() {
             var tmpl = $.templates(templateHTML);
             console.log(tmpl);
 
-            var data = { pageObj: pageObj };
+            var data = { pageObj: pageObj, endScript: "</script>" };
             var html = tmpl.render(data);
             console.log(html);
             $("#content").html(html);
@@ -144,7 +144,8 @@ var Site = (function() {
         Init: Init,
         HashVars: HashVars,
         PostWithJson: PostWithJson,
-        Auth: Auth
+        Auth: Auth,
+        WaitForTemplate: WaitForTemplate
     };
 
 }());
