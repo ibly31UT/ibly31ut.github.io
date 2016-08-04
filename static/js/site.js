@@ -14,8 +14,12 @@ var Site = (function() {
 	var LoadTemplate = LoadTemplate;
 	var PostWithJson = PostWithJson;
 	var Init = Init;
-	var HashVars = null;
+	var HashVarsPriv = null;
 	var Auth = null;
+
+	var HashVars = (function(){
+		return HashVarsPriv;
+	})
 
 	var CreateInternalHandler = function(timeoutId, handler) {
 		return function(data, textStatus, errorThrown) {
@@ -155,6 +159,8 @@ var Site = (function() {
 	};
 
 	Init = function(hashVars) {
+		console.log("Initializing site with hashvars:");
+		console.log(hashVars);
 		BindEvents();
 		HashVars = hashVars;
 	};
