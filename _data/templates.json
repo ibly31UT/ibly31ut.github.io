@@ -1,7 +1,7 @@
 [
   {
     "name": "auth",
-    "js": "static/js/auth.js",
+    "js": "static/js/auth.js?nocache=2",
     "url": "auth.html",
     "selector": "#authDiv",
     "post": "Auth.Init();"

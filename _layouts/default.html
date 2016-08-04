@@ -46,7 +46,7 @@
 	<script type="text/javascript" src="static/js/Snoocore-standalone.js"></script>
 	<script src="static/js/site.js?nocache=123"></script>
 	{% for template in site.data.templates %}
-	<script src="{{ template.js }}?nocache=123"></script>
+	<script src="{{ template.js }}"></script>
 	{% endfor %}
 	<script type="text/javascript">
 		window.Templates = {};
