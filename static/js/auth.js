@@ -92,7 +92,6 @@ var Auth = (function() {
     };
 
     var SortPosts = function(data) {
-
         return (sortArr(makeArr()));
 
         function makeArr() {
@@ -172,7 +171,6 @@ var Auth = (function() {
             token_type: "bearer",
             limit: 100
         };
-        console.log("Assigning config");
         Config.OAuth = Object.assign(Config.OAuth, Site.HashVars);
         console.log(Config);
     };
@@ -187,7 +185,7 @@ var Auth = (function() {
 
     var Init = function() {
         LoadVars();
-        //SetupOAuth();
+        SetupOAuth();
         BindEvents();
     };
 

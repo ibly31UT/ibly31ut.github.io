@@ -123,7 +123,6 @@ var Site = (function() {
 			$(templateObj.selector).html(html);
 			setTimeout(function(){
 				templateObj.post();
-				console.log("Post on complete");
 			}, 50);
 		}).fail(function(data){
 			console.log("Loading of template failed!");
