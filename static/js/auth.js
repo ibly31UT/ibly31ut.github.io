@@ -11,8 +11,10 @@ var Auth = (function() {
         OAuth: null
     };
 
+    console.log("Loading auth...");
+
     var Elements = null;
-    
+
     var LoadElements = function() {
         return {
             AuthButton: $("#authButton"),
