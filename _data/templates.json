@@ -2,6 +2,15 @@
   {
     "name": "auth",
     "js": "static/js/auth.js",
-    "div": "#authDiv"
+    "page": "auth.html",
+    "selector": "#authDiv",
+    "post": "Auth.Init();"
+  },
+  {
+    "name": "post",
+    "js": "static/js/post.js",
+    "page": "post.html",
+    "selector": "#postWrapperDiv",
+    "post": "console.log('whats up');"
   }
 ]

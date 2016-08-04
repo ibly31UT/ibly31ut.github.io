@@ -1,23 +1,40 @@
----
-layout: default
----
+--- layout: default ---
+<div id="authDiv">
+
+</div>
+
 <script type="text/javascript">
+	window.Templates = {};
+	{% for t in site.data.templates %}
+	window.Templates.{{ t.name }} = {};
+	window.Templates.{{ t.name }}.page = "{{ t.page }}";
+	window.Templates.{{ t.name }}.selector = "{{ t.selector }}";
+	window.Templates.{{ t.name }}.postFunc = function(){
+		{{ t.post }}
+	};
+	{% endfor %}
+
 	$(document).ready(function() {
-		if(location.search.length === 0){
-			window.location.replace("https://ibly31utgithub.io/index.html?template=auth");
-			return;
-		}else{
-			console.log("Index.html loaded");
-			console.log("Window search:");
-			console.log(location.search);
-			console.log(location.hash);
-
-			var qd = {};
-			location.search.substr(1).split("&").forEach(function(item) {(item.split("=")[0] in qd) ? qd[item.split("=")[0]].push(item.split("=")[1]) : qd[item.split("=")[0]] = [item.split("=")[1]]})
-			console.log(qd);
-
-			//Site.Init(location.queryString);
-			//Site.WaitForTemplate("static/js/auth.js");
+		function parseVars(str) {
+			var ret = {};
+			substr(1).split("&").forEach(function(item) {
+				(item.split("=")[0] in ret) ? ret[item.split("=")[0]].push(item.split("=")[1]): ret[item.split("=")[0]] = [item.split("=")[1]]
+			});
+			return ret;
 		}
+		var searchVars = parseVars(location.search);
+		console.log(searchVars);
+		if (searchVars.template === undefined || searchVars.template === null || searchVars.template.length === 0) {
+			window.location.replace("https://ibly31utgithub.io?template=auth" + window.location.hash);
+			return;
+		}
+
+		console.log(window.Templates);
+		console.log(searchVars.template);
+
+		var hashVars = parseVars(location.hash);
+
+		Site.Init(hashVars);
+		Site.LoadTemplate(window.Templates[searchVars.template]);
 	});
 </script>

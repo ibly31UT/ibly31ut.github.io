@@ -11,8 +11,6 @@ var Auth = (function() {
         OAuth: null
     };
 
-    console.log("Loading auth...");
-
     var Elements = null;
 
     var LoadElements = function() {
@@ -195,7 +193,7 @@ var Auth = (function() {
 
     return {
         Init: Init,
-        Config: Config,
+        Config: Config
     };
 
 }());
