@@ -122,7 +122,7 @@ var Site = (function() {
 			console.log(html);
 			$(templateObj.selector).html(html);
 			setTimeout(function(){
-				templateObj.onComplete();
+				templateObj.post();
 				console.log("Post on complete");
 			}, 50);
 		}).fail(function(data){

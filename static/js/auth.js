@@ -168,7 +168,7 @@ var Auth = (function() {
             type: "implicit",
             consumerKey: "PmMIThJN2lAM7w",
             scope: ["flair", "identity", "history", "edit", "read", "subscribe", "vote"],
-            redirectUri: "https://ibly31ut.github.io/default.html?template=auth",
+            redirectUri: "https://ibly31ut.github.io?template=auth",
             token_type: "bearer",
             limit: 100
         };
