@@ -6,16 +6,19 @@ var Site = (function() {
     var WaitDialogCloseTimeout = null;
 
     var Elements = {
-        WaitDialog: $("#_waitDialog")
+        WaitDialog: 	$("#_waitDialog"),
+        Body: 			$("body"),
+        HiddenBSModal: 	$("")
     };
     var LoadElements = LoadElements;
     var BindEvents = BindEvents;
-    var WaitForTemplate = WaitForTemplate;
+    var LoadTemplate = LoadTemplate;
+    var PostWithJson = PostWithJson;
     var Init = Init;
     var HashVars = null;
     var Auth = null;
 
-    var createInternalHandler = function(timeoutId, handler) {
+    var CreateInternalHandler = function(timeoutId, handler) {
         return function(data, textStatus, errorThrown) {
 
             if (timeoutId !== null) {
@@ -27,7 +30,6 @@ var Site = (function() {
                     $('.modal-backdrop').remove();
                     $(this).css("display", "");
                 }).modal("hide");
-
             }
 
             if (WaitDialogCloseTimeout !== null) {
@@ -41,7 +43,7 @@ var Site = (function() {
         };
     };
 
-    var PostWithJson = function(url, data, success, error, noWaitDialog) {
+    PostWithJson = function(url, data, success, error, noWaitDialog) {
         var timeoutId = null;
         WaitDialogCloseTimeout = null;
         if (!error) {
@@ -52,7 +54,7 @@ var Site = (function() {
 
                 if (XMLHttpRequest.responseJSON !== null && XMLHttpRequest.responseJSON !== undefined && XMLHttpRequest.responseJSON.Redirect !== null && XMLHttpRequest.responseJSON.Redirect !== undefined) {
                     //AjaxAwareHandleErrorAttribute will have caught a CommunicationException or EndpointNotFoundException to get here
-                    redirect(XMLHttpRequest.responseJSON.Redirect);
+                    Redirect(XMLHttpRequest.responseJSON.Redirect);
                 } else if (errorThrown !== null && errorThrown !== undefined) {
                     alert("PostWithJson failed for " + url + "\n Error : " + textStatus + " \n\n\n\n" + errorThrown);
                 } else {
@@ -80,13 +82,13 @@ var Site = (function() {
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             traditional: true,
-            success: createInternalHandler(timeoutId, WaitDialogCloseTimeout, success),
-            error: createInternalHandler(timeoutId, WaitDialogCloseTimeout, error),
-            timeout: 60000
+            success: CreateInternalHandler(timeoutId, WaitDialogCloseTimeout, success),
+            error: CreateInternalHandler(timeoutId, WaitDialogCloseTimeout, error),
+            timeout: 20000
         });
     };
 
-    var iE8Redirect = function(url) {
+    var IE8Redirect = function(url) {
         var referLink = document.createElement('a');
         referLink.href = url;
 
@@ -94,26 +96,26 @@ var Site = (function() {
         referLink.click();
     };
 
-    var redirect = function(url) {
+    var Redirect = function(url) {
         //IE 8 redirect hack to add the referrer header
         if (navigator.userAgent.toLowerCase().indexOf("msie 8.") > 0) {
-            iE8Redirect(url);
+            IE8Redirect(url);
         } else {
             window.location = url;
         }
     };
 
-    WaitForTemplate = function(selector, pageObj) {
+    LoadTemplate = function(selector, pageObj) {
         clearTimeout(waitForLoadTimeout);
         if (window.ReadyToLoad === undefined || !window.ReadyToLoad) {
-            waitForLoadTimeout = setTimeout(function() { WaitForTemplate(selector, pageObj); }, 100);
+            waitForLoadTimeout = setTimeout(function() { LoadTemplate(selector, pageObj); }, 100);
         } else {
             var templateHTML = window.TemplateHTML;
             var tmpl = $.templates(templateHTML);
             console.log(tmpl);
 
             var data = { pageObj: pageObj, endScript: "</script>" };
-            var html = tmpl.render(data);
+            var html = $.li(data);
             console.log(html);
             $("#content").html(html);
         }
@@ -135,7 +137,7 @@ var Site = (function() {
         }
     };
 
-    Init = function(hashVars) {
+    Init = function(authVars) {
         BindEvents();
         HashVars = hashVars;
     };
@@ -145,7 +147,7 @@ var Site = (function() {
         HashVars: HashVars,
         PostWithJson: PostWithJson,
         Auth: Auth,
-        WaitForTemplate: WaitForTemplate
+        LoadTemplate: LoadTemplate
     };
 
 }());

@@ -12,7 +12,7 @@ var Auth = (function() {
     };
 
     var Elements = null;
-
+    
     var LoadElements = function() {
         return {
             AuthButton: $("#authButton"),

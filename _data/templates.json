@@ -1,0 +1,7 @@
+[
+  {
+    "name": "auth",
+    "js": "static/js/auth.js",
+    "div": "#authDiv"
+  }
+]
