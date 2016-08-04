@@ -52,9 +52,9 @@
 		window.Templates = {};
 		{% for t in site.data.templates %}
 		window.Templates.{{ t.name }} = {};
-		window.Templates.{{ t.name }}.page = "{{ t.page }}";
+		window.Templates.{{ t.name }}.url = "{{ t.page }}";
 		window.Templates.{{ t.name }}.selector = "{{ t.selector }}";
-		window.Templates.{{ t.name }}.postFunc = function(){
+		window.Templates.{{ t.name }}.onComplete = function(){
 			{{ t.post }}
 		};
 		{% endfor %}
