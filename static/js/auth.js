@@ -171,7 +171,12 @@ var Auth = (function() {
             token_type: "bearer",
             limit: 100
         };
-        Config.OAuth = Object.assign(Config.OAuth, Site.HashVars);
+
+        for(var key in Site.HashVars){
+        	if(Site.HashVars.hasOwnProperty(key) && Site.HashVars[key].length > 0){
+        		Config.OAuth[key] = Site.HashVars[key][0];
+        	}
+        }
         console.log(Config);
     };
 
