@@ -49,6 +49,15 @@
 	<script src="{{ template.js }}"></script>
 	{% endfor %}
 	<script type="text/javascript">
+		window.Templates = {};
+		{% for t in site.data.templates %}
+		window.Templates.{{ t.name }} = {};
+		window.Templates.{{ t.name }}.page = "{{ t.page }}";
+		window.Templates.{{ t.name }}.selector = "{{ t.selector }}";
+		window.Templates.{{ t.name }}.postFunc = function(){
+			{{ t.post }}
+		};
+		{% endfor %}
 		$(document).ready(function() {
 			console.log("Ready!");
 		});

@@ -4,16 +4,6 @@
 </div>
 
 <script type="text/javascript">
-	window.Templates = {};
-	{% for t in site.data.templates %}
-	window.Templates.{{ t.name }} = {};
-	window.Templates.{{ t.name }}.page = "{{ t.page }}";
-	window.Templates.{{ t.name }}.selector = "{{ t.selector }}";
-	window.Templates.{{ t.name }}.postFunc = function(){
-		{{ t.post }}
-	};
-	{% endfor %}
-
 	$(document).ready(function() {
 		function parseVars(str) {
 			var ret = {};
