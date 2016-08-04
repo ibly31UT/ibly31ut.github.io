@@ -187,7 +187,7 @@ var Auth = (function() {
 
     var Init = function() {
         LoadVars();
-        SetupOAuth();
+        //SetupOAuth();
         BindEvents();
     };
 

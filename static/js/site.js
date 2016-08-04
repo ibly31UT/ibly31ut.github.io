@@ -2,7 +2,6 @@
 
 var Site = (function() {
 	'use strict';
-	var waitForLoadTimeout = null;
 	var WaitDialogCloseTimeout = null;
 
 	var Elements = {
@@ -122,7 +121,7 @@ var Site = (function() {
 			var html = tmpl.render(inp);
 			console.log(html);
 			$(templateObj.selector).html(html);
-			setInterval(function(){
+			setTimeout(function(){
 				templateObj.onComplete();
 				console.log("Post on complete");
 			}, 50);
