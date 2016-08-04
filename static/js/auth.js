@@ -172,7 +172,8 @@ var Auth = (function() {
             limit: 100
         };
 
-        for(var key in Site.HashVars){
+        var hashVars = Site.ParseVars(location.hash);
+        for(var key in hashVars){
         	if(Site.HashVars.hasOwnProperty(key) && Site.HashVars[key].length > 0){
         		Config.OAuth[key] = Site.HashVars[key][0];
         	}
