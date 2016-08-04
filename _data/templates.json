@@ -2,7 +2,7 @@
   {
     "name": "auth",
     "js": "static/js/auth.js",
-    "url": "https://ibly31ut.github.io/auth.html",
+    "url": "auth.html",
     "selector": "#authDiv",
     "post": "Auth.Init();"
   }
