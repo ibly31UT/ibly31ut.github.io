@@ -9,7 +9,7 @@ layout: default
 	$(document).ready(function() {
 		function parseVars(str) {
 			var ret = {};
-			substr(1).split("&").forEach(function(item) {
+			str.substr(1).split("&").forEach(function(item) {
 				(item.split("=")[0] in ret) ? ret[item.split("=")[0]].push(item.split("=")[1]): ret[item.split("=")[0]] = [item.split("=")[1]]
 			});
 			return ret;
