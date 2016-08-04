@@ -2,15 +2,8 @@
   {
     "name": "auth",
     "js": "static/js/auth.js",
-    "page": "auth.html",
+    "page": "https://ibly31ut.github.io/auth.html",
     "selector": "#authDiv",
     "post": "Auth.Init();"
-  },
-  {
-    "name": "post",
-    "js": "static/js/post.js",
-    "page": "post.html",
-    "selector": "#postWrapperDiv",
-    "post": "console.log('whats up');"
   }
 ]
