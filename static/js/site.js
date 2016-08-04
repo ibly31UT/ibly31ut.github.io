@@ -14,12 +14,14 @@ var Site = (function() {
 	var LoadTemplate = LoadTemplate;
 	var PostWithJson = PostWithJson;
 	var Init = Init;
-	var HashVarsPriv = null;
-	var Auth = null;
 
-	var HashVars = (function(){
-		return HashVarsPriv;
-	})
+	var ParseVars = function(str) {
+		var ret = {};
+		str.substr(1).split("&").forEach(function(item) {
+			(item.split("=")[0] in ret) ? ret[item.split("=")[0]].push(item.split("=")[1]): ret[item.split("=")[0]] = [item.split("=")[1]]
+		});
+		return ret;
+	};
 
 	var CreateInternalHandler = function(timeoutId, handler) {
 		return function(data, textStatus, errorThrown) {
@@ -158,18 +160,14 @@ var Site = (function() {
 		Elements = LoadElements();
 	};
 
-	Init = function(hashVars) {
-		console.log("Initializing site with hashvars:");
-		console.log(hashVars);
+	Init = function() {
 		BindEvents();
-		HashVars = hashVars;
 	};
 
 	return {
 		Init: Init,
-		HashVars: HashVars,
+		ParseVars: ParseVars,
 		PostWithJson: PostWithJson,
-		Auth: Auth,
 		LoadTemplate: LoadTemplate
 	};
 

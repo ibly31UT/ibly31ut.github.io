@@ -7,14 +7,7 @@ layout: default
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		function parseVars(str) {
-			var ret = {};
-			str.substr(1).split("&").forEach(function(item) {
-				(item.split("=")[0] in ret) ? ret[item.split("=")[0]].push(item.split("=")[1]): ret[item.split("=")[0]] = [item.split("=")[1]]
-			});
-			return ret;
-		}
-		var searchVars = parseVars(location.search);
+		var searchVars = Site.ParseVars(location.search);
 		console.log(searchVars);
 		if (searchVars.template === undefined || searchVars.template === null || searchVars.template.length === 0) {
 			setTimeout(function(){
@@ -27,9 +20,10 @@ layout: default
 		console.log(window.Templates);
 		console.log(searchVars.template);
 
-		var hashVars = parseVars(location.hash);
+		var hashVars = Site.ParseVars(location.hash);
 
-		Site.Init(hashVars);
+		Site.Init();
+		
 		Site.LoadTemplate(window.Templates[searchVars.template]);
 	});
 </script>
